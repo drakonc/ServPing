@@ -2,26 +2,30 @@ var ping = require('ping');
 var nodemailer = require('nodemailer');
 
 var hosts = [
-    '192.168.200.4', '192.168.200.10', '192.168.200.18', '192.168.200.21', '192.168.200.37',
-    '192.168.200.39', '192.168.200.40', '192.168.200.50'
+    '172.27.83.194', '172.27.83.195', '172.27.191.227', '172.27.198.66', '172.27.198.69',
+    '192.168.200.4', '192.168.200.5', '192.168.200.6', '192.168.200.8', '192.168.200.10',
+    '192.168.200.11', '192.168.200.12', '192.168.200.13', '192.168.200.14', '192.168.200.15',
+    '192.168.200.16', '192.168.200.17', '192.168.200.18', '192.168.200.19', '192.168.200.20',
+    '192.168.200.21', '192.168.200.25', '192.168.200.37', '192.168.200.38', '192.168.200.39',
+    '192.168.200.40', '192.168.200.41', '192.168.200.43', '192.168.200.45', '192.168.200.50',
+    '192.168.200.52', '192.168.200.92', '192.168.200.116', '192.168.200.230', '192.168.200.251',
 ];
 
-const mensaje = [];
-
 async function isPing() {
+    contenHTML = `
+                    <h1>Server Ping Viva1a IPS</h1>
+                    <ul>
+                `
     for (let host of hosts) {
         let res = await ping.promise.probe(host);
         let isAlive = res.alive
         var msg = isAlive ? `host ${res.host} time = ${res.time} is ${isAlive}` : `host ${res.host} time = ${res.time} is ${isAlive}`;
-        let dato = { msg: msg }
-        mensaje.push(dato)
+        contenHTML += `<li>${msg}</li>`
     }
-    contenHTML = `
-        <h1>Server Ping</h1>
-        <ul>
-            ${mensaje.map((d) => '<li>' + d.msg + '</li>')}
-        </ul>
-    `
+
+    contenHTML += `
+                    </ul>
+                  `
     sendMail(contenHTML)
 }
 console.log('Realizando Ping...')
@@ -37,16 +41,16 @@ function sendMail(mensajeHTML) {
         tls: {
             ciphers: 'SSLv3',
             rejectUnauthorized: false
-        },// true for 465, false for other ports
+        },
         auth: {
-            user: 'jcastro@viva1a.com.co',
-            pass: 'Panamericano06'
+            user: 'soporte.ti@viva1a.com.co',
+            pass: 'Qwertyuiop0011'
         },
         debug: true,
     });
 
     var mailOptions = {
-        from: 'jcastro@viva1a.com.co',
+        from: 'soporte.ti@viva1a.com.co',
         to: 'pgelvez@viva1a.com.co,rojito@viva1a.com.co, cherrera@viva1a.com.co,jcastro@viva1a.com.co',
         subject: 'Server Ping',
         html: `${mensajeHTML}`
